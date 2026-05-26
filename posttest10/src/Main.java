@@ -1,101 +1,52 @@
 import java.util.*;
 
-class Film {
-    String kodeFilm;
-    String judul;
-    int harga;
-
-    Film(String kodeFilm, String judul, int harga) {
-        this.kodeFilm = kodeFilm;
-        this.judul = judul;
-        this.harga = harga;
-    }
-}
-
-class Transaksi {
-    String nama;
-    String judulFilm;
-    String kursi;
-    int harga;
-
-    Transaksi(String nama, String judulFilm, String kursi, int harga) {
-        this.nama = nama;
-        this.judulFilm = judulFilm;
-        this.kursi = kursi;
-        this.harga = harga;
-    }
-
-    @Override
-    public String toString() {
-        return nama + " | " + judulFilm + " | Kursi: " + kursi + " | Rp" + harga;
-    }
-}
-
 public class Main {
 
     public static void main(String[] args) {
 
-      
+        // MAP FILM
         Map<String, Film> filmMap = new HashMap<>();
-
-        filmMap.put("F01", new Film("F01", "Avengers Endgame", 50000));
+        filmMap.put("F01", new Film("F01", "Avengers", 50000));
         filmMap.put("F02", new Film("F02", "Interstellar", 45000));
-        filmMap.put("F03", new Film("F03", "Spiderman No Way Home", 55000));
+        filmMap.put("F03", new Film("F03", "Spiderman", 55000));
 
-        System.out.println("=== DAFTAR FILM ===");
-        for (String key : filmMap.keySet()) {
-            Film f = filmMap.get(key);
-            System.out.println(f.kodeFilm + " - " + f.judul + " - Rp" + f.harga);
-        }
+        // SET KURSI
+        Set<String> kursi = new HashSet<>();
 
-      
-        Set<String> kursiTerpesan = new HashSet<>();
-
-        
+        // LIST RIWAYAT
         List<Transaksi> riwayat = new ArrayList<>();
 
-     
-        pesanTiket("Andi", "F01", "A1", filmMap, kursiTerpesan, riwayat);
-        pesanTiket("Budi", "F01", "A2", filmMap, kursiTerpesan, riwayat);
-        pesanTiket("Citra", "F01", "A3", filmMap, kursiTerpesan, riwayat);
+        // SIMULASI
+        pesan("Andi", "F01", "A1", filmMap, kursi, riwayat);
+        pesan("Budi", "F01", "A2", filmMap, kursi, riwayat);
+        pesan("Citra", "F02", "A3", filmMap, kursi, riwayat);
 
-       
-        pesanTiket("Doni", "F01", "A1", filmMap, kursiTerpesan, riwayat);
+        // gagal (kursi sama)
+        pesan("Doni", "F01", "A1", filmMap, kursi, riwayat);
 
-        System.out.println("\n=== RIWAYAT TRANSAKSI ===");
+        System.out.println("\n=== RIWAYAT ===");
         for (Transaksi t : riwayat) {
             System.out.println(t);
         }
     }
 
-   
-    public static void pesanTiket(String nama,
-                                  String kodeFilm,
-                                  String kursi,
-                                  Map<String, Film> filmMap,
-                                  Set<String> kursiTerpesan,
-                                  List<Transaksi> riwayat) {
+    public static void pesan(String nama, String kodeFilm, String kursi, Map<String, Film> filmMap, Set<String> kursiSet, List<Transaksi> riwayat) {
 
         Film film = filmMap.get(kodeFilm);
 
-        // validasi film
         if (film == null) {
-            System.out.println("GAGAL: Kode film tidak valid -> " + kodeFilm);
+            System.out.println("Film tidak ada");
             return;
         }
 
-        // validasi kursi
-        if (kursiTerpesan.contains(kursi)) {
-            System.out.println("GAGAL: Kursi sudah dipesan -> " + kursi);
+        if (kursiSet.contains(kursi)) {
+            System.out.println("Kursi sudah dipakai: " + kursi);
             return;
         }
 
-        // sukses booking
-        kursiTerpesan.add(kursi);
+        kursiSet.add(kursi);
+        riwayat.add(new Transaksi(nama, film.judul, kursi, film.harga));
 
-        Transaksi t = new Transaksi(nama, film.judul, kursi, film.harga);
-        riwayat.add(t);
-
-        System.out.println("SUKSES: " + nama + " memesan " + film.judul + " kursi " + kursi);
+        System.out.println(nama + " berhasil pesan " + film.judul);
     }
 }
