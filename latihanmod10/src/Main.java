@@ -1,47 +1,5 @@
 import java.util.*;
 
-class Buku {
-    String isbn, judul;
-
-    Buku(String isbn, String judul) {
-        this.isbn = isbn;
-        this.judul = judul;
-    }
-
-    @Override
-    public String toString() {
-        return isbn + " - " + judul;
-    }
-}
-
-class Anggota {
-    String idAnggota, nama, tipe;
-
-    Anggota(String idAnggota, String nama, String tipe) {
-        this.idAnggota = idAnggota;
-        this.nama = nama;
-        this.tipe = tipe;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Anggota)) return false;
-        Anggota a = (Anggota) o;
-        return idAnggota.equals(a.idAnggota);
-    }
-
-    @Override
-    public int hashCode() {
-        return idAnggota.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return idAnggota + " (" + nama + " - " + tipe + ")";
-    }
-}
-
 public class Main {
 
     public static void main(String[] args) {
